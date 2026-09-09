@@ -3,7 +3,7 @@
     "target": "ES2022",
     "module": "CommonJS",
     "lib": ["ES2022"],
-    "types": ["node", "@wdio/globals/types", "@wdio/mocha-framework", "expect-webdriverio"],
+    "types": ["node", "@wdio/globals/types", "@wdio/mocha-framework"],
     "outDir": "./build",
     "strict": true,
     "noUnusedLocals": true,
@@ -12,5 +12,8 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": []
+  "include": [
+    "config/**/*.ts",
+    "src/**/*.ts"
+  ]
 }
