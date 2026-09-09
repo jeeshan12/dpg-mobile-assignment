@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "description": "Cross-platform (Android + iOS) Appium/WebdriverIO/TypeScript test suite",
-  "scripts": {},
+  "scripts": {
+    "test:android": "wdio run ./config/wdio.android.conf.ts"
+  },
   "devDependencies": {
     "@appium/relaxed-caps-plugin": "^3.0.0",
+    "@types/node": "~22.20.2",
     "@wdio/appium-service": "~9.5.0",
     "@wdio/cli": "~9.5.0",
     "@wdio/junit-reporter": "~9.5.0",
