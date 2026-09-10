@@ -3,3 +3,4 @@ build/
 chromedriver-mobile/
 apps/
 reports/
+.DS_Store
