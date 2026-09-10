@@ -47,4 +47,3 @@ describe('Consent Screen Flow', () => {
     await expect(preferencesScreen.container).not.toBeDisplayed();
   });
 });
-

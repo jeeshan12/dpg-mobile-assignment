@@ -25,6 +25,7 @@ function iosCapability(
     'appium:newCommandTimeout': 120,
     'appium:wdaLaunchTimeout': 120000,
     'appium:wdaConnectionTimeout': 120000,
+    'appium:waitForQuiescence': false,
     // Reset all state on every launch/relaunch
     'appium:processArguments': {
       args: ['-resetAllState', ...extraArgs],
