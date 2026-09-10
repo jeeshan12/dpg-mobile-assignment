@@ -30,23 +30,19 @@ export class PreferencesScreen extends BaseScreen {
   }
 
   async toggleAnalytics(): Promise<void> {
-    await this.waitForDisplayed(this.analyticsToggle);
-    await this.analyticsToggle.click();
+    await this.toggleSwitch(this.analyticsToggle);
   }
 
   async togglePersonalisation(): Promise<void> {
-    await this.waitForDisplayed(this.personalisationToggle);
-    await this.personalisationToggle.click();
+    await this.toggleSwitch(this.personalisationToggle);
   }
 
   async isAnalyticsChecked(): Promise<boolean> {
-    const checked = await this.analyticsToggle.getAttribute('checked');
-    return checked === 'true';
+    return this.isElementChecked(this.analyticsToggle);
   }
 
   async isPersonalisationChecked(): Promise<boolean> {
-    const checked = await this.personalisationToggle.getAttribute('checked');
-    return checked === 'true';
+    return this.isElementChecked(this.personalisationToggle);
   }
 
   async savePreferences(): Promise<void> {

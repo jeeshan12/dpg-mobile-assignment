@@ -1,4 +1,3 @@
-import { $ } from '@wdio/globals';
 import { BaseScreen } from './BaseScreen';
 
 export class ConsentScreen extends BaseScreen {
@@ -7,7 +6,7 @@ export class ConsentScreen extends BaseScreen {
   }
 
   get title() {
-    return $('//*[@text="Your privacy choices"]');
+    return this.byText('Your privacy choices');
   }
 
   get acceptButton() {

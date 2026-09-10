@@ -4,7 +4,9 @@
   "private": true,
   "description": "Cross-platform (Android + iOS) Appium/WebdriverIO/TypeScript test suite",
   "scripts": {
+    "test": "wdio run ./config/wdio.all.conf.ts",
     "test:android": "wdio run ./config/wdio.android.conf.ts",
+    "test:ios": "wdio run ./config/wdio.ios.conf.ts",
     "report:generate": "allure generate reports/allure-results --clean -o reports/allure-report",
     "report:open": "allure open reports/allure-report"
   },
