@@ -1,9 +1,7 @@
 import path from 'path';
 import { sharedConfig } from './wdio.shared.conf';
 
-
 const ROOT_DIR = path.resolve(__dirname, '..');
-
 
 const FAST_TIMING = {
   contentDelayMs: 800,
@@ -40,7 +38,5 @@ export const config: WebdriverIO.Config = {
   port: 4723,
   services: [['appium', { command: 'appium' }]],
 
-  capabilities: [
-    androidCapability(),
-  ],
+  capabilities: [androidCapability()],
 };

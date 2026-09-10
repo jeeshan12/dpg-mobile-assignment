@@ -52,4 +52,3 @@ export class ConsentScreen extends BaseScreen {
 }
 
 export const consentScreen = new ConsentScreen();
-

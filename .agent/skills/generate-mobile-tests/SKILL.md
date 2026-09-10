@@ -16,16 +16,16 @@ This skill provides a systematic, step-by-step workflow for generating Page Obje
 All screen objects must extend `BaseScreen` and follow this structure:
 
 ```ts
-import { BaseScreen } from "./BaseScreen";
+import { BaseScreen } from './BaseScreen';
 
 export class ScreenName extends BaseScreen {
   // 1. Locators / Getters
   get container() {
-    return this.byId("screen_identifier");
+    return this.byId('screen_identifier');
   }
 
   get actionButton() {
-    return this.byId("action_button_identifier");
+    return this.byId('action_button_identifier');
   }
 
   // 2. State & Visibility Helpers

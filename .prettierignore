@@ -1,0 +1,9 @@
+node_modules/
+reports/
+apps/
+chromedriver-mobile/
+dist/
+build/
+package-lock.json
+.git/
+
