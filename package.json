@@ -1,9 +1,13 @@
 {
   "name": "video-qa-challenge-tests",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "description": "Cross-platform (Android + iOS) Appium/WebdriverIO/TypeScript test suite",
   "scripts": {
+    "fetch:apps": "bash scripts/fetch-apps.sh",
+    "pretest": "npm run fetch:apps",
+    "pretest:android": "npm run fetch:apps",
+    "pretest:ios": "npm run fetch:apps",
     "test": "wdio run ./config/wdio.all.conf.ts",
     "test:android": "wdio run ./config/wdio.android.conf.ts",
     "test:ios": "wdio run ./config/wdio.ios.conf.ts",
