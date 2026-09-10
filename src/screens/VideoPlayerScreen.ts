@@ -6,19 +6,23 @@ export type VideoPlaybackState = 'Buffering' | 'Playing' | 'Paused' | 'Error' | 
 export class VideoPlayerScreen extends BaseScreen {
   // Locators
   get container() {
-    return this.byId('video_player_container');
+    return this.byId('video_player');
   }
 
   get stateLabel() {
     return this.byId('video_state_label');
   }
 
-  get playPauseButton() {
-    return this.byId('video_play_pause_button');
+  get playButton() {
+    return this.byId('video_play_button');
+  }
+
+  get pauseButton() {
+    return this.byId('video_pause_button');
   }
 
   get currentTime() {
-    return this.byId('video_current_time');
+    return this.byId('video_current_position');
   }
 
   get duration() {
@@ -26,7 +30,7 @@ export class VideoPlayerScreen extends BaseScreen {
   }
 
   get progressSlider() {
-    return this.byId('video_progress_slider');
+    return this.byId('video_progress');
   }
 
   get errorMessage() {
@@ -47,8 +51,7 @@ export class VideoPlayerScreen extends BaseScreen {
   }
 
   async getStateText(): Promise<string> {
-    await this.waitForPlayer();
-    return this.stateLabel.getText();
+    return this.getElementText(this.stateLabel);
   }
 
   /**
@@ -57,7 +60,7 @@ export class VideoPlayerScreen extends BaseScreen {
   async waitForState(targetState: VideoPlaybackState, timeout = 15_000): Promise<void> {
     await browser.waitUntil(
       async () => {
-        const text = await this.stateLabel.getText();
+        const text = await this.getStateText();
         return text.includes(targetState);
       },
       {
@@ -69,9 +72,22 @@ export class VideoPlayerScreen extends BaseScreen {
   }
 
   // User Actions
+  async pauseVideo(): Promise<void> {
+    await this.waitForDisplayed(this.pauseButton);
+    await this.pauseButton.click();
+  }
+
+  async resumeVideo(): Promise<void> {
+    await this.waitForDisplayed(this.playButton);
+    await this.playButton.click();
+  }
+
   async togglePlayPause(): Promise<void> {
-    await this.waitForDisplayed(this.playPauseButton);
-    await this.playPauseButton.click();
+    if (await this.pauseButton.isDisplayed()) {
+      await this.pauseVideo();
+    } else {
+      await this.resumeVideo();
+    }
   }
 
   async retryPlayback(): Promise<void> {
@@ -80,13 +96,11 @@ export class VideoPlayerScreen extends BaseScreen {
   }
 
   async getCurrentPosition(): Promise<string> {
-    await this.waitForDisplayed(this.currentTime);
-    return this.currentTime.getText();
+    return this.getElementText(this.currentTime);
   }
 
   async getTotalDuration(): Promise<string> {
-    await this.waitForDisplayed(this.duration);
-    return this.duration.getText();
+    return this.getElementText(this.duration);
   }
 }
 

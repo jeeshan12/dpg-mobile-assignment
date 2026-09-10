@@ -15,7 +15,7 @@ export class ContentDetailScreen extends BaseScreen {
   }
 
   get publishedDate() {
-    return this.byId('detail_published_date');
+    return this.byText('Published');
   }
 
   get description() {
@@ -23,7 +23,7 @@ export class ContentDetailScreen extends BaseScreen {
   }
 
   get playButton() {
-    return this.byId('detail_play_button');
+    return this.byId('video_play_button');
   }
 
   get backButton() {
@@ -41,16 +41,26 @@ export class ContentDetailScreen extends BaseScreen {
 
   // Text retrieval
   async getTitleText(): Promise<string> {
-    await this.waitForDisplayed(this.title);
-    return this.title.getText();
+    return this.getElementText(this.title);
   }
 
   async getCategoryText(): Promise<string> {
-    await this.waitForDisplayed(this.category);
-    return this.category.getText();
+    return this.getElementText(this.category);
+  }
+
+  async getPublishedDateText(): Promise<string> {
+    return this.getElementText(this.publishedDate);
+  }
+
+  async getDescriptionText(): Promise<string> {
+    return this.getElementText(this.description);
   }
 
   // User Actions
+  async scrollToPlayButton(): Promise<void> {
+    await this.scrollToElement(this.playButton);
+  }
+
   async playVideo(): Promise<void> {
     await this.waitForDisplayed(this.playButton);
     await this.playButton.click();

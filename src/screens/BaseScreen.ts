@@ -27,7 +27,7 @@ export abstract class BaseScreen {
    * Helper to locate an element by text, label, or name across Android and iOS
    */
   protected byText(text: string) {
-    return $(`//*[@text="${text}" or @label="${text}" or @name="${text}"]`);
+    return $(`//*[contains(@text, "${text}") or contains(@label, "${text}") or contains(@name, "${text}")]`);
   }
 
   /**
@@ -49,6 +49,21 @@ export abstract class BaseScreen {
       reverse: true,
       timeoutMsg: `Element was still displayed after ${timeout}ms`,
     });
+  }
+
+  /**
+   * Retrieves visible text from an element across Android and iOS.
+   * On iOS XCUITest, prioritizes the visible 'label' and gracefully falls back to getText().
+   */
+  async getElementText(element: ChainablePromiseElement): Promise<string> {
+    await this.waitForDisplayed(element);
+    if (browser.isIOS) {
+      const label = await element.getAttribute('label');
+      if (label && label.trim().length > 0) {
+        return label;
+      }
+    }
+    return element.getText();
   }
 
   /**
@@ -98,6 +113,30 @@ export abstract class BaseScreen {
         interval: 200,
       }
     );
+  }
+
+  /**
+   * Scrolls vertically until the target element is visible in the viewport.
+   */
+  async scrollToElement(element: ChainablePromiseElement, maxScrolls = 5): Promise<void> {
+    for (let i = 0; i < maxScrolls; i++) {
+      if (await element.isDisplayed()) {
+        return;
+      }
+
+      const { width, height } = await browser.getWindowSize();
+      const startX = Math.round(width / 2);
+      const startY = Math.round(height * 0.7);
+      const endY = Math.round(height * 0.3);
+
+      await browser.action('pointer')
+        .move({ origin: 'viewport', x: startX, y: startY })
+        .down()
+        .pause(100)
+        .move({ origin: 'viewport', x: startX, y: endY, duration: 400 })
+        .up()
+        .perform();
+    }
   }
 }
 

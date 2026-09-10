@@ -2,7 +2,6 @@ import path from 'path';
 import { sharedConfig } from './wdio.shared.conf';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const specPath = (name: string): string => path.join(ROOT_DIR, 'src', 'specs', name);
 
 const ANDROID_APK_PATH = path.join(ROOT_DIR, 'apps', 'android', 'VideoQAChallenge-debug.apk');
 const IOS_APP_PATH = path.join(ROOT_DIR, 'apps', 'ios', 'VideoQAChallenge.app');
@@ -25,7 +24,6 @@ export const config: WebdriverIO.Config = {
       'appium:newCommandTimeout': 120,
       'appium:adbExecTimeout': 60000,
       'appium:optionalIntentArguments': '--ez resetAllState true --ei contentDelayMs 800 --ei videoBufferingMs 800',
-      'wdio:specs': [specPath('consent.spec.ts')],
     } as WebdriverIO.Capabilities,
 
     {
@@ -41,7 +39,6 @@ export const config: WebdriverIO.Config = {
         args: ['-resetAllState'],
         env: { CONTENT_DELAY_MS: '800', VIDEO_BUFFERING_MS: '800' },
       },
-      'wdio:specs': [specPath('consent.spec.ts')],
     } as WebdriverIO.Capabilities,
   ],
 };
