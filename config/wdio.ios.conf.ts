@@ -2,7 +2,6 @@ import path from 'path';
 import { sharedConfig } from './wdio.shared.conf';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const specPath = (name: string): string => path.join(ROOT_DIR, 'src', 'specs', name);
 
 const FAST_TIMING = {
   CONTENT_DELAY_MS: '800',
@@ -46,7 +45,7 @@ export const config: WebdriverIO.Config = {
   services: [['appium', { command: 'appium' }]],
 
   capabilities: [
-    iosCapability([specPath('consent.spec.ts')]),
+    iosCapability(),
   ],
 };
 
