@@ -4,13 +4,19 @@
   "private": false,
   "description": "Cross-platform (Android + iOS) Appium/WebdriverIO/TypeScript test suite",
   "scripts": {
-    "fetch:apps": "bash scripts/fetch-apps.sh",
-    "pretest": "npm run fetch:apps",
-    "pretest:android": "npm run fetch:apps",
-    "pretest:ios": "npm run fetch:apps",
+    "pretest": "bash scripts/fetch-apps.sh",
     "test": "wdio run ./config/wdio.all.conf.ts",
+    "pretest:android": "bash scripts/fetch-apps.sh",
     "test:android": "wdio run ./config/wdio.android.conf.ts",
+    "pretest:ios": "bash scripts/fetch-apps.sh",
     "test:ios": "wdio run ./config/wdio.ios.conf.ts",
+    "appium:farm": "appium --config config/appium-device-farm.json",
+    "pretest:farm": "bash scripts/fetch-apps.sh",
+    "test:farm": "wdio run ./config/wdio.devicefarm.conf.ts",
+    "pretest:farm:android": "bash scripts/fetch-apps.sh",
+    "test:farm:android": "PLATFORM=android wdio run ./config/wdio.devicefarm.conf.ts",
+    "pretest:farm:ios": "bash scripts/fetch-apps.sh",
+    "test:farm:ios": "PLATFORM=ios wdio run ./config/wdio.devicefarm.conf.ts",
     "lint": "eslint \"src/**/*.ts\" \"config/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" \"config/**/*.ts\" --fix",
     "format": "prettier --write \"**/*.{ts,json,md}\"",
@@ -33,6 +39,7 @@
     "@wdio/types": "~9.5.0",
     "allure-commandline": "^2.43.0",
     "appium": "~3.7.0",
+    "appium-device-farm": "~12.0.1",
     "appium-uiautomator2-driver": "~8.6.1",
     "appium-xcuitest-driver": "~12.11.1",
     "eslint": "~8.57.1",
@@ -42,5 +49,8 @@
     "lint-staged": "~15.5.2",
     "prettier": "~3.9.6",
     "typescript": "~5.5.4"
+  },
+  "overrides": {
+    "bplist-parser": "0.3.2"
   }
 }
