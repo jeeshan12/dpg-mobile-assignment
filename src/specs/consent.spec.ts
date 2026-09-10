@@ -34,7 +34,7 @@ describe('Consent Screen Flow', () => {
     await preferencesScreen.waitForScreen();
     await expect(preferencesScreen.container).toBeDisplayed();
 
-    // Toggle analytics and personalisation
+    // Toggle analytics and verify state transition
     const initialAnalytics = await preferencesScreen.isAnalyticsChecked();
     await preferencesScreen.toggleAnalytics();
     const updatedAnalytics = await preferencesScreen.isAnalyticsChecked();
