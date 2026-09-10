@@ -41,6 +41,10 @@ export class VideoPlayerScreen extends BaseScreen {
     return this.byId('video_retry_button');
   }
 
+  get bufferingIndicator() {
+    return this.byId('video_buffering_indicator');
+  }
+
   // Visibility & State
   async isDisplayed(): Promise<boolean> {
     return this.stateLabel.isDisplayed();
@@ -101,6 +105,10 @@ export class VideoPlayerScreen extends BaseScreen {
 
   async getTotalDuration(): Promise<string> {
     return this.getElementText(this.duration);
+  }
+
+  async getErrorMessageText(): Promise<string> {
+    return this.getElementText(this.errorMessage);
   }
 }
 
