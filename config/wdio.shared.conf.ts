@@ -53,13 +53,13 @@ export const sharedConfig: Omit<Options.Testrunner, 'capabilities'> = {
     fs.mkdirSync(ALLURE_RESULTS_DIR, { recursive: true });
   },
 
-
   beforeTest: async function () {
     await browser.reloadSession();
 
     const caps = browser.capabilities as Record<string, any>;
     const platform = (caps.platformName ?? (browser.isAndroid ? 'Android' : 'iOS')) as string;
-    const deviceName = (caps['appium:deviceName'] ?? (browser.isAndroid ? 'Android Emulator' : 'iOS Simulator')) as string;
+    const deviceName = (caps['appium:deviceName'] ??
+      (browser.isAndroid ? 'Android Emulator' : 'iOS Simulator')) as string;
     const osVersion = (caps['appium:platformVersion'] ?? caps.platformVersion ?? '') as string;
 
     allureReporter.addTag(platform);

@@ -12,10 +12,7 @@ const APP_PATH = path.join(ROOT_DIR, 'apps', 'ios', 'VideoQAChallenge.app');
 const DEVICE_NAME = process.env.IOS_SIMULATOR_NAME ?? 'iPhone 16';
 const PLATFORM_VERSION = process.env.IOS_PLATFORM_VERSION ?? '18.6';
 
-function iosCapability(
-  specs?: string[],
-  extraArgs: string[] = [],
-): WebdriverIO.Capabilities {
+function iosCapability(specs?: string[], extraArgs: string[] = []): WebdriverIO.Capabilities {
   const cap: WebdriverIO.Capabilities = {
     platformName: 'iOS',
     'appium:automationName': 'XCUITest',
@@ -45,8 +42,5 @@ export const config: WebdriverIO.Config = {
   port: 4723,
   services: [['appium', { command: 'appium' }]],
 
-  capabilities: [
-    iosCapability(),
-  ],
+  capabilities: [iosCapability()],
 };
-

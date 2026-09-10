@@ -24,7 +24,9 @@ describe('Video Playback Flow', () => {
     await expect(contentDetailScreen.category).toHaveText('Travel');
     await expect(contentDetailScreen.publishedDate).toBeDisplayed();
     await expect(contentDetailScreen.description).toBeDisplayed();
-    expect(await contentDetailScreen.getDescriptionText()).toContain('Explore Amsterdam and its surroundings');
+    expect(await contentDetailScreen.getDescriptionText()).toContain(
+      'Explore Amsterdam and its surroundings',
+    );
     await expect(contentDetailScreen.backButton).toBeDisplayed();
 
     await contentDetailScreen.scrollToPlayButton();
@@ -110,7 +112,9 @@ describe('Video Playback Flow', () => {
     await expect(videoPlayerScreen.stateLabel).toHaveText(expect.stringContaining('Error'));
 
     await expect(videoPlayerScreen.errorMessage).toBeDisplayed();
-    await expect(videoPlayerScreen.errorMessage).toHaveText(expect.stringContaining('Video could not be played'));
+    await expect(videoPlayerScreen.errorMessage).toHaveText(
+      expect.stringContaining('Video could not be played'),
+    );
     await expect(videoPlayerScreen.retryButton).toBeDisplayed();
   });
 
@@ -142,7 +146,7 @@ describe('Video Playback Flow', () => {
       {
         timeout: 15_000,
         timeoutMsg: 'Video player did not initialize buffering or playing state within 15000ms',
-      }
+      },
     );
     await expect(videoPlayerScreen.stateLabel).toHaveText(/Buffering|Playing/);
   });

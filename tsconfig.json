@@ -12,8 +12,5 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": [
-    "config/**/*.ts",
-    "src/**/*.ts"
-  ]
+  "include": ["config/**/*.ts", "src/**/*.ts"]
 }

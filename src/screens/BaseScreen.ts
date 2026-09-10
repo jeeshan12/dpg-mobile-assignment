@@ -27,7 +27,9 @@ export abstract class BaseScreen {
    * Helper to locate an element by text, label, or name across Android and iOS
    */
   protected byText(text: string) {
-    return $(`//*[contains(@text, "${text}") or contains(@label, "${text}") or contains(@name, "${text}")]`);
+    return $(
+      `//*[contains(@text, "${text}") or contains(@label, "${text}") or contains(@name, "${text}")]`,
+    );
   }
 
   /**
@@ -95,7 +97,8 @@ export abstract class BaseScreen {
       const size = await element.getSize();
       const tapX = Math.round(loc.x + size.width - 25);
       const tapY = Math.round(loc.y + size.height / 2);
-      await browser.action('pointer')
+      await browser
+        .action('pointer')
         .move({ origin: 'viewport', x: tapX, y: tapY })
         .down()
         .pause(100)
@@ -105,14 +108,11 @@ export abstract class BaseScreen {
       await element.click();
     }
 
-    await browser.waitUntil(
-      async () => (await this.isElementChecked(element)) !== initialState,
-      {
-        timeout: 10_000,
-        timeoutMsg: 'Toggle state did not update after click',
-        interval: 200,
-      }
-    );
+    await browser.waitUntil(async () => (await this.isElementChecked(element)) !== initialState, {
+      timeout: 10_000,
+      timeoutMsg: 'Toggle state did not update after click',
+      interval: 200,
+    });
   }
 
   /**
@@ -129,7 +129,8 @@ export abstract class BaseScreen {
       const startY = Math.round(height * 0.7);
       const endY = Math.round(height * 0.3);
 
-      await browser.action('pointer')
+      await browser
+        .action('pointer')
         .move({ origin: 'viewport', x: startX, y: startY })
         .down()
         .pause(100)
@@ -139,4 +140,3 @@ export abstract class BaseScreen {
     }
   }
 }
-

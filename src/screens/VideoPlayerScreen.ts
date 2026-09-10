@@ -71,7 +71,7 @@ export class VideoPlayerScreen extends BaseScreen {
         timeout,
         timeoutMsg: `Video player did not reach state '${targetState}' within ${timeout}ms`,
         interval: 300,
-      }
+      },
     );
   }
 
@@ -113,4 +113,3 @@ export class VideoPlayerScreen extends BaseScreen {
 }
 
 export const videoPlayerScreen = new VideoPlayerScreen();
-

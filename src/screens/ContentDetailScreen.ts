@@ -73,4 +73,3 @@ export class ContentDetailScreen extends BaseScreen {
 }
 
 export const contentDetailScreen = new ContentDetailScreen();
-

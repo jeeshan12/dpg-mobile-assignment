@@ -58,4 +58,3 @@ export class PreferencesScreen extends BaseScreen {
 }
 
 export const preferencesScreen = new PreferencesScreen();
-

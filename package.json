@@ -7,11 +7,18 @@
     "test": "wdio run ./config/wdio.all.conf.ts",
     "test:android": "wdio run ./config/wdio.android.conf.ts",
     "test:ios": "wdio run ./config/wdio.ios.conf.ts",
+    "lint": "eslint \"src/**/*.ts\" \"config/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"config/**/*.ts\" --fix",
+    "format": "prettier --write \"**/*.{ts,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,json,md}\"",
     "report:generate": "allure generate reports/allure-results --clean -o reports/allure-report",
-    "report:open": "allure open reports/allure-report"
+    "report:open": "allure open reports/allure-report",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/node": "~22.20.2",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "@wdio/allure-reporter": "~9.5.0",
     "@wdio/appium-service": "~9.5.0",
     "@wdio/cli": "~9.5.0",
@@ -24,6 +31,12 @@
     "appium": "~3.7.0",
     "appium-uiautomator2-driver": "~8.6.1",
     "appium-xcuitest-driver": "~12.11.1",
-    "typescript": "~5.6.3"
+    "eslint": "~8.57.1",
+    "eslint-config-prettier": "~9.1.2",
+    "eslint-plugin-wdio": "~8.37.0",
+    "husky": "~9.1.7",
+    "lint-staged": "~15.5.2",
+    "prettier": "~3.9.6",
+    "typescript": "~5.5.4"
   }
 }

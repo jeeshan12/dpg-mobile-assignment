@@ -1,9 +1,5 @@
 import { expect } from '@wdio/globals';
-import {
-  consentScreen,
-  contentOverviewScreen,
-  debugOptionsScreen,
-} from '../screens';
+import { consentScreen, contentOverviewScreen, debugOptionsScreen } from '../screens';
 
 describe('Content Overview Feed', () => {
   it('should display video cards and refresh feed successfully', async () => {
@@ -40,7 +36,9 @@ describe('Content Overview Feed', () => {
 
     // 4. Verify error state UI components with retrying expect assertions
     await expect(contentOverviewScreen.errorMessage).toBeDisplayed();
-    await expect(contentOverviewScreen.errorMessage).toHaveText(expect.stringContaining('could not load'));
+    await expect(contentOverviewScreen.errorMessage).toHaveText(
+      expect.stringContaining('could not load'),
+    );
     await expect(contentOverviewScreen.errorRetryButton).toBeDisplayed();
   });
 

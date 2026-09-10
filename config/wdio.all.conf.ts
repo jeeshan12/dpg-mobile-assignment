@@ -23,7 +23,8 @@ export const config: WebdriverIO.Config = {
       'appium:autoGrantPermissions': true,
       'appium:newCommandTimeout': 120,
       'appium:adbExecTimeout': 60000,
-      'appium:optionalIntentArguments': '--ez resetAllState true --ei contentDelayMs 800 --ei videoBufferingMs 800',
+      'appium:optionalIntentArguments':
+        '--ez resetAllState true --ei contentDelayMs 800 --ei videoBufferingMs 800',
     } as WebdriverIO.Capabilities,
 
     {
@@ -42,4 +43,3 @@ export const config: WebdriverIO.Config = {
     } as WebdriverIO.Capabilities,
   ],
 };
-
