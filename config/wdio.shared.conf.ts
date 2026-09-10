@@ -7,15 +7,6 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const REPORTS_DIR = path.join(ROOT_DIR, 'reports');
 const SCREENSHOTS_DIR = path.join(REPORTS_DIR, 'screenshots');
 
-/**
- * Settings shared by both the Android and iOS run configurations.
- * Platform-specific files (wdio.android.conf.ts / wdio.ios.conf.ts) set
- * `capabilities`, `port` and the Appium service `command`, then spread
- * this object in.
- *
- * TypeScript support (compiling these .ts config/spec files) is handled
- * automatically by @wdio/cli via `tsx` -- no ts-node setup needed.
- */
 export const sharedConfig: Omit<Options.Testrunner, 'capabilities'> = {
   runner: 'local',
   framework: 'mocha',
@@ -43,11 +34,20 @@ export const sharedConfig: Omit<Options.Testrunner, 'capabilities'> = {
         outputFileFormat: (opts: { cid: string }) => `results-${opts.cid}.xml`,
       },
     ],
+    [
+      'allure',
+      {
+        outputDir: path.join(REPORTS_DIR, 'allure-results'),
+        disableWebdriverStepsReporting: true,
+        disableWebdriverScreenshotsReporting: false,
+      },
+    ],
   ],
 
   // Every test starts from a brand-new app session. reloadSession() re-launches
-  // the app under the *same* capabilities used to start the session
-  // order-agnostic: no test relies on state left behind by another.
+  // the app under the *same* capabilities used to start the session -- so the
+  // launch arguments / intent extras that put the app in a known state
+  // are re-applied before every single test.
   beforeTest: async function () {
     await browser.reloadSession();
   },

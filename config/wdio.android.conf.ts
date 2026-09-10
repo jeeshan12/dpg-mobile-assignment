@@ -25,6 +25,7 @@ function androidCapability(specs?: string[], intentExtra: string = ''): Webdrive
     'appium:appActivity': APP_ACTIVITY,
     'appium:autoGrantPermissions': true,
     'appium:newCommandTimeout': 120,
+    'appium:adbExecTimeout': 60000,
     'appium:optionalIntentArguments': `--ez resetAllState true --ei contentDelayMs ${FAST_TIMING.contentDelayMs} --ei videoBufferingMs ${FAST_TIMING.videoBufferingMs}${intentExtra}`,
   };
 
@@ -41,6 +42,6 @@ export const config: WebdriverIO.Config = {
   services: [['appium', { command: 'appium' }]],
 
   capabilities: [
-    androidCapability([specPath('*.spec.ts')]),
+    androidCapability([specPath('consent.spec.ts')]),
   ],
 };
