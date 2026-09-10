@@ -2,6 +2,10 @@ import { BaseScreen } from './BaseScreen';
 
 export class ContentOverviewScreen extends BaseScreen {
   // Locators
+  get screen() {
+    return this.byId('content_overview_screen');
+  }
+
   get refreshButton() {
     return this.byId('content_refresh_button');
   }
@@ -14,16 +18,24 @@ export class ContentOverviewScreen extends BaseScreen {
     return this.byId('content_loading_indicator');
   }
 
-  get emptyMessage() {
-    return this.byId('content_empty_message');
+  get emptyState() {
+    return this.byText('No videos are available');
+  }
+
+  get emptyRetryButton() {
+    return this.byText('Try again');
+  }
+
+  get errorState() {
+    return this.byId('content_error_state');
   }
 
   get errorMessage() {
     return this.byId('content_error_message');
   }
 
-  get retryButton() {
-    return this.byId('content_retry_button');
+  get errorRetryButton() {
+    return this.byId('content_error_retry_button');
   }
 
   // Video Card Locators
@@ -87,6 +99,14 @@ export class ContentOverviewScreen extends BaseScreen {
   async openDebugOptions(): Promise<void> {
     await this.waitForDisplayed(this.debugOptionsButton);
     await this.debugOptionsButton.click();
+  }
+
+  async getErrorMessageText(): Promise<string> {
+    return this.getElementText(this.errorMessage);
+  }
+
+  async getEmptyStateText(): Promise<string> {
+    return this.getElementText(this.emptyState);
   }
 }
 

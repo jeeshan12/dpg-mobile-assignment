@@ -4,6 +4,7 @@ import {
   contentOverviewScreen,
   contentDetailScreen,
   videoPlayerScreen,
+  debugOptionsScreen,
 } from '../screens';
 
 describe('Video Playback Flow', () => {
@@ -85,6 +86,69 @@ describe('Video Playback Flow', () => {
 
     await contentOverviewScreen.waitForLoaded();
     await expect(contentOverviewScreen.amsterdamItem).toBeDisplayed();
+  });
+
+  it('should display error message and retry button when video playback fails', async () => {
+    // 1. Handle consent
+    await consentScreen.waitForScreen();
+    await consentScreen.acceptAll();
+
+    // 2. Open Debug Options and configure video error mode
+    await contentOverviewScreen.waitForLoaded();
+    await contentOverviewScreen.openDebugOptions();
+    await debugOptionsScreen.waitForScreen();
+    await debugOptionsScreen.setVideoMode('error');
+    await debugOptionsScreen.close();
+
+    // 3. Open video detail and trigger playback
+    await contentOverviewScreen.openAmsterdamVideo();
+    await contentDetailScreen.waitForScreen();
+    await contentDetailScreen.scrollToPlayButton();
+    await contentDetailScreen.playVideo();
+
+    // 4. Verify Error state and error UI components
+    await videoPlayerScreen.waitForPlayer();
+    await videoPlayerScreen.waitForState('Error');
+    expect(await videoPlayerScreen.getStateText()).toContain('Error');
+
+    await expect(videoPlayerScreen.errorMessage).toBeDisplayed();
+    const errorMsg = await videoPlayerScreen.getErrorMessageText();
+    expect(errorMsg).toContain('Video could not be played');
+    await expect(videoPlayerScreen.retryButton).toBeDisplayed();
+  });
+
+  it('should handle video buffering state during playback', async () => {
+    // 1. Handle consent
+    await consentScreen.waitForScreen();
+    await consentScreen.acceptAll();
+
+    // 2. Open Debug Options and configure video buffering mode
+    await contentOverviewScreen.waitForLoaded();
+    await contentOverviewScreen.openDebugOptions();
+    await debugOptionsScreen.waitForScreen();
+    await debugOptionsScreen.setVideoMode('buffering');
+    await debugOptionsScreen.close();
+
+    // 3. Open video detail and trigger playback
+    await contentOverviewScreen.openAmsterdamVideo();
+    await contentDetailScreen.waitForScreen();
+    await contentDetailScreen.scrollToPlayButton();
+    await contentDetailScreen.playVideo();
+
+    // 4. Verify player is displayed and reaches valid state
+    await videoPlayerScreen.waitForPlayer();
+    await browser.waitUntil(
+      async () => {
+        const state = await videoPlayerScreen.getStateText();
+        return state.includes('Buffering') || state.includes('Playing');
+      },
+      {
+        timeout: 15_000,
+        timeoutMsg: 'Video player did not initialize buffering or playing state within 15000ms',
+      }
+    );
+    const stateText = await videoPlayerScreen.getStateText();
+    expect(stateText).toMatch(/Buffering|Playing/);
   });
 });
 
