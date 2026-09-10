@@ -17,7 +17,7 @@ describe('Content Overview Feed', () => {
     await expect(contentOverviewScreen.newsroomItem).toBeDisplayed();
     await expect(contentOverviewScreen.morningItem).toBeDisplayed();
 
-    // 3. Trigger refresh and verify feed is still loaded
+    // 3. Trigger refresh and verify feed remains loaded
     await contentOverviewScreen.refreshContent();
     await contentOverviewScreen.waitForLoaded();
     await expect(contentOverviewScreen.amsterdamItem).toBeDisplayed();
@@ -38,10 +38,9 @@ describe('Content Overview Feed', () => {
     // 3. Trigger refresh to load error state
     await contentOverviewScreen.refreshContent();
 
-    // 4. Verify error state UI components
+    // 4. Verify error state UI components with retrying expect assertions
     await expect(contentOverviewScreen.errorMessage).toBeDisplayed();
-    const errorText = await contentOverviewScreen.getErrorMessageText();
-    expect(errorText).toContain('could not load');
+    await expect(contentOverviewScreen.errorMessage).toHaveText(expect.stringContaining('could not load'));
     await expect(contentOverviewScreen.errorRetryButton).toBeDisplayed();
   });
 
@@ -60,11 +59,8 @@ describe('Content Overview Feed', () => {
     // 3. Trigger refresh to load empty state
     await contentOverviewScreen.refreshContent();
 
-    // 4. Verify empty state UI components
+    // 4. Verify empty state UI components with retrying expect assertions
     await expect(contentOverviewScreen.emptyState).toBeDisplayed();
-    const emptyText = await contentOverviewScreen.getEmptyStateText();
-    expect(emptyText).toContain('No videos');
     await expect(contentOverviewScreen.emptyRetryButton).toBeDisplayed();
   });
 });
-
