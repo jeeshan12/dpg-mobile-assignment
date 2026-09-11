@@ -175,6 +175,11 @@ We created a specialized agent skill located in [`.agent/skills/generate-mobile-
 1. **Static Code Analysis vs. Runtime UI (Broken Locators)**:
    - _Problem_: AI initially extracted locators by analyzing the application's GitHub source code. However, several declared test tags and resource IDs did not map to the actual runtime UI hierarchy (particularly on SwiftUI on iOS, where nested accessibility traits and containers mask child elements).
    - _QE Action_: I used **Appium Inspector** on live Android Emulators and iOS Simulators to inspect the true view hierarchies, replacing static assumptions with stable accessibility labels and UIAutomator/XCUITest predicates.
+
+   <p align="center">
+     <img src="./images/appium_inspector.png" alt="Appium Inspector View Hierarchy" width="750" />
+   </p>
+
 2. **Shallow vs. Deep State Assertions**:
    - _Problem_: AI initially generated shallow assertions (e.g. merely checking `toBeDisplayed()` without validating the actual functional state or content).
    - _QE Action_: I intervened by providing concrete examples of deep state assertions (validating switch toggle boolean states, comparing formatted video duration timestamps `00:10 / 00:10`, and asserting error banner recovery) and defined these rules in the custom skill.
@@ -184,7 +189,7 @@ We created a specialized agent skill located in [`.agent/skills/generate-mobile-
 
 ---
 
-### 4. Summary Retrospective
+### 4. Summary
 
 AI functioned as a powerful velocity multiplier for repetitive boilerplate and mathematical coordinate debugging. However, **human Quality Engineering domain expertise, live Appium Inspector debugging, and explicit feedback loops** were vital to achieving a rock-solid, 100% passing cross-platform test suite.
 
@@ -228,7 +233,7 @@ appium driver install xcuitest
 
 ---
 
-## 📦 Installation & App Binaries
+## Installation & App Binaries
 
 ### 1. Clone & Install Dependencies
 
@@ -379,6 +384,26 @@ npm run report:generate
 # Open the report in your default browser
 npm run report:open
 ```
+
+### Report Previews
+
+#### 1. Allure Executive Dashboard
+
+<p align="center">
+  <img src="./images/dashboard.png" alt="Allure Executive Dashboard" width="850" />
+</p>
+
+#### 2. Test Suites Execution Overview
+
+<p align="center">
+  <img src="./images/suites.png" alt="Allure Test Suites" width="850" />
+</p>
+
+#### 3. Packages & Test Specs Breakdown
+
+<p align="center">
+  <img src="./images/packages.png" alt="Allure Packages View" width="850" />
+</p>
 
 ---
 
