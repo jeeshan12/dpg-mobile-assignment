@@ -385,6 +385,29 @@ Test results are recorded in JUnit and Allure formats under `reports/`.
 
 ---
 
+### Test Execution Environment & Selection Criteria
+
+| Parameter                | Android Environment                                  | iOS Environment                          |
+| :----------------------- | :--------------------------------------------------- | :--------------------------------------- |
+| **Device Model**         | Google Pixel 8 Pro (Emulator / AVD)                  | iPhone 16 (Simulator)                    |
+| **Operating System**     | Android 14.0 (API Level 34 - `x86_64` / `arm64-v8a`) | iOS 18.6 (Xcode 16 Runtime)              |
+| **Automation Driver**    | `appium-uiautomator2-driver` (~8.6.1)                | `appium-xcuitest-driver` (~12.11.1)      |
+| **Execution Layer**      | Local CLI Runner & `@appium/device-farm`             | Local CLI Runner & `@appium/device-farm` |
+| **Suite Execution Time** | ~02 min 51 sec (13 specs passed)                     | ~03 min 23 sec (13 specs passed)         |
+
+#### Why This Environment Was Chosen:
+
+1. **Deterministic Isolation & Clean State Resets**:
+   - Emulators and Simulators allow complete application sandboxing and instant cache wipes (`browser.reloadSession()` combined with `-resetAllState` launch flags).
+2. **Launch Intent & Timing Acceleration**:
+   - Both Android AVD and iOS Simulator runtimes allow injection of launch intent extras and environment flags (`--ei contentDelayMs 800 --ei videoBufferingMs 800`). This accelerates synthetic network delays from 4+ seconds down to 800ms, making 100% video playback tests fast, deterministic, and free of timing flakiness.
+3. **Modern Target OS Baseline **:
+   - Target SDKs using environment variables to run on different android and IOS versions against emulators/simulators
+4. **Zero-Cost Scalability & Cloud Device Farm Ready**:
+   - Pairing local AVDs/Simulators with `@appium/device-farm` provides a self-hosted private cloud grid with dynamic pooling and web dashboards at zero recurring subscription cost.
+
+---
+
 ### Local Report Generation & Deployment
 
 ```bash
