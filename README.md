@@ -6,18 +6,18 @@ A cross-platform (Android & iOS) mobile test automation framework developed with
 
 ## 📑 Table of Contents
 
-- [Architecture & Design Highlights](#-architecture--design-highlights)
-- [Tech Stack](#-tech-stack)
-- [Test Suites & Coverage Matrix](#-test-suites--coverage-matrix)
-- [Test Plan & Strategic Next Steps](#-test-plan--strategic-next-steps)
-- [AI Collaboration, Custom Skill & Learnings](#-ai-collaboration-custom-skill--learnings)
-- [Prerequisites & System Setup](#-prerequisites--system-setup)
-- [Installation & App Binaries](#-installation--app-binaries)
-- [Local Test Execution](#-local-test-execution)
-- [Self-Hosted Device Farm (@appium/device-farm)](#-self-hosted-device-farm-appiumdevice-farm)
-- [Quality Gates: TypeScript, ESLint, Prettier & Git Hooks](#-quality-gates-typescript-eslint-prettier--git-hooks)
-- [Test Reporting (Allure)](#-test-reporting-allure)
-- [Troubleshooting & FAQs](#-troubleshooting--faqs)
+- [Architecture & Design Highlights](#architecture--design-highlights)
+- [Tech Stack](#tech-stack)
+- [Test Suites & Coverage Matrix](#test-suites--coverage-matrix)
+- [Test Plan & Strategic Next Steps](#test-plan--strategic-next-steps)
+- [AI Collaboration, Custom Skill & Learnings](#ai-collaboration-custom-skill--learnings)
+- [Prerequisites & System Setup](#prerequisites--system-setup)
+- [Installation & App Binaries](#installation--app-binaries)
+- [Local Test Execution](#local-test-execution)
+- [Self-Hosted Device Farm (@appium/device-farm)](#self-hosted-device-farm-appiumdevice-farm)
+- [Quality Gates: TypeScript, ESLint, Prettier & Git Hooks](#quality-gates-typescript-eslint-prettier--git-hooks)
+- [Test Reporting (Allure)](#test-reporting-allure)
+- [Troubleshooting & FAQs](#troubleshooting--faqs)
 
 ---
 
