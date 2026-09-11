@@ -2,6 +2,10 @@
 
 A cross-platform (Android & iOS) mobile test automation framework developed with **WebdriverIO v9**, **Appium 2.x**, **TypeScript**, **Mocha**, and **Allure Reporter** for the Video QA Challenge application.
 
+[![Allure Report](https://img.shields.io/badge/Allure%20Report-Live%20Demo-brightgreen?logo=allure&style=for-the-badge)](https://jeeshan12.github.io/dpg-mobile-assignment/)
+
+> 📊 **Live Interactive Report**: [https://jeeshan12.github.io/dpg-mobile-assignment/](https://jeeshan12.github.io/dpg-mobile-assignment/) (Android & iOS)
+
 ---
 
 ## 📑 Table of Contents
@@ -375,14 +379,23 @@ Whenever you run `git commit`:
 
 Test results are recorded in JUnit and Allure formats under `reports/`.
 
-### Generate & Open Allure Report
+### 🌐 Live Hosted Report (GitHub Pages)
+
+👉 **[Open Live Interactive Allure Report (Android & iOS)](https://jeeshan12.github.io/dpg-mobile-assignment/)**
+
+---
+
+### Local Report Generation & Deployment
 
 ```bash
-# Generate the interactive HTML report
+# 1. Generate the interactive HTML report from test results
 npm run report:generate
 
-# Open the report in your default browser
+# 2. Open the report in your default browser locally
 npm run report:open
+
+# 3. Publish the report to GitHub Pages (no CI/Actions needed!)
+npm run report:deploy
 ```
 
 ### Report Previews
