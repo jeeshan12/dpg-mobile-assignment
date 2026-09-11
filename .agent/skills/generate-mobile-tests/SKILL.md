@@ -9,9 +9,54 @@ This skill provides a systematic, step-by-step workflow for generating Page Obje
 
 ---
 
-## Step 1: Generating Page Objects (Screen Classes)
+## 🏛 Core Architectural Rules
 
-### Standard Screen Template Reference (`ConsentScreen.ts`)
+### 1. Auto-Retrying Matchers (Mandatory)
+
+Always use WebdriverIO's native assertion system (`await expect(...)`) with automatic retry polling instead of static Chai assertions:
+
+```ts
+// ✅ Correct: Polls and auto-retries DOM/view hierarchy changes
+await expect(contentOverviewScreen.title).toBeDisplayed();
+await expect(contentOverviewScreen.title).toHaveText('Videos');
+await expect(videoPlayerScreen.stateLabel).toHaveText('Playing');
+
+// ❌ Incorrect: Shallow/Static evaluation without polling (prone to race conditions)
+expect(await contentOverviewScreen.title.isDisplayed()).to.be.true;
+expect(await contentOverviewScreen.title.getText()).to.equal('Videos');
+```
+
+### 2. Deep State Assertions (No Shallow Checks)
+
+Never stop at mere element visibility (`toBeDisplayed()`). Always assert functional state:
+
+- **Toggles/Switches**: Assert actual checked/boolean state (e.g. `await preferencesScreen.isAnalyticsEnabled()`).
+- **Video Playback**: Assert dynamic state labels (`Buffering` ➔ `Playing` ➔ `Completed`), formatted elapsed times, and progress bar advancement.
+- **Error States**: Assert error banner message text AND verify successful recovery after clicking retry buttons.
+
+### 3. Session Isolation & Test Setup Scoping
+
+In `wdio.shared.conf.ts`, `beforeTest` runs `browser.reloadSession()` to guarantee complete hermetic test isolation.
+
+- **Rule**: All test navigation, consent acceptance, and prerequisite setup **MUST** execute explicitly inside each `it()` block, **NOT** inside Mocha `beforeEach()` hooks.
+
+### 4. Fast Timing & Launch Intent Flags
+
+App launch intent flags and environment variables accelerate video buffering and content delays:
+
+- **Android**: `--ez resetAllState true --ei contentDelayMs 800 --ei videoBufferingMs 800`
+- **iOS Process Env**: `CONTENT_DELAY_MS: '800'`, `VIDEO_BUFFERING_MS: '800'`, args: `['-resetAllState']`
+
+### 5. Appium Inspector Verification (Live Hierarchy vs. Static Source)
+
+Never assume source-code IDs on GitHub match runtime view trees. Always verify locators on live Android Emulators and iOS Simulators via **Appium Inspector**:
+
+- **SwiftUI (iOS)**: Accessibility labels (`@label`) and traits often wrap child elements; use predicate strings or label matching when `accessibilityIdentifier` is obscured.
+- **Compose (Android)**: Resource IDs or `content-desc` accessibility IDs.
+
+---
+
+## 🛠 Step 1: Generating Page Objects (Screen Classes)
 
 All screen objects must extend `BaseScreen` and follow this structure:
 
@@ -37,20 +82,20 @@ export class ScreenName extends BaseScreen {
     await this.waitForDisplayed(this.container, timeout);
   }
 
-  // 3. User Actions & Interactions
+  // 3. User Actions & Deep State Interactions
   async performAction(): Promise<void> {
     await this.waitForDisplayed(this.actionButton);
     await this.actionButton.click();
   }
 }
 
-// Export both class and singleton instance
+// Export singleton instance
 export const screenName = new ScreenName();
 ```
 
 ---
 
-## Canonical Locator Registry (Android & iOS)
+## 📱 Canonical Locator Registry (Android & iOS)
 
 Use the verified identifiers below when referencing or creating screen objects:
 
@@ -65,7 +110,7 @@ Use the verified identifiers below when referencing or creating screen objects:
 ### 2. Preferences Screen (`PreferencesScreen.ts`)
 
 - **Screen Container**: `preferences_screen`
-- **Analytics Toggle**: `analytics_toggle`
+- **Analytics Toggle**: `analytics_toggle` (tapped via relative bounding box coordinates in `BaseScreen.ts` to avoid non-clickable row whitespace, following [Appium Pro #22](https://appium.pro/editions/22-making-your-appium-tests-fast-and-reliable-part-4-dealing-with-unfindable-elements))
 - **Personalisation Toggle**: `personalisation_toggle`
 - **Save Preferences Button**: `preferences_save_button`
 - **Back Button**: `Back` (Accessibility ID)
@@ -103,7 +148,7 @@ Use the verified identifiers below when referencing or creating screen objects:
 ### 5. Video Player Screen (`VideoPlayerScreen.ts`)
 
 - **Player Container**: `video_player`
-- **State Label**: `video_state_label` (Observable states: `Buffering`, `Playing`, `Paused`, `Error`, `Completed`)
+- **State Label**: `video_state_label` (States: `Buffering`, `Playing`, `Paused`, `Error`, `Completed`)
 - **Play Button**: `video_play_button`
 - **Pause Button**: `video_pause_button`
 - **Current Position**: `video_current_position`
@@ -135,22 +180,33 @@ Use the verified identifiers below when referencing or creating screen objects:
 
 ---
 
-## Test Suites & Specs
+## 🧪 Standard Test Spec Pattern
 
-| Spec File                     | Area Covered          | Scenarios                                                                                                                  |
-| :---------------------------- | :-------------------- | :------------------------------------------------------------------------------------------------------------------------- |
-| **`consent.spec.ts`**         | Consent & Preferences | Initial UI, Accept all, Reject optional, Manage & save preferences.                                                        |
-| **`contentOverview.spec.ts`** | Feed & Content States | Feed item rendering & refresh, Content error state & retry, Content empty state & retry.                                   |
-| **`videoPlayback.spec.ts`**   | Video Player & Detail | Detail metadata verification, Play/Pause/Resume states, Back navigation, Video error state & retry, Video buffering state. |
+```ts
+import { consentScreen, contentOverviewScreen, videoPlayerScreen } from '../screens';
+
+describe('Feature Area - E2E Suite', () => {
+  it('should navigate and assert deep state with auto-retrying expectations', async () => {
+    // 1. Arrange & Navigate
+    await consentScreen.waitForScreen();
+    await consentScreen.acceptAll();
+
+    // 2. Act
+    await contentOverviewScreen.waitForScreen();
+    await contentOverviewScreen.selectVideo('amsterdam');
+
+    // 3. Assert (Auto-retrying)
+    await expect(videoPlayerScreen.stateLabel).toHaveText('Playing');
+  });
+});
+```
 
 ---
 
-## Screen Generation Checklist
-
-When generating or modifying any screen:
+## 📋 Screen & Spec Generation Checklist
 
 1. **Cross-Platform Compatibility**: Use `this.byId()` (`resource-id` on Android, `accessibility id` on iOS) and `this.byText()`.
 2. **Platform Handling in BaseScreen**: Never add `if (browser.isIOS)` in individual screen classes; delegate platform abstraction (text extraction `@label` vs `@value`, pointer tap offsets for switches) to `BaseScreen.ts`.
-3. **Deterministic Synchronization**: Never use hardcoded sleeps (`browser.pause()`); rely strictly on `waitForDisplayed()` or `browser.waitUntil()`.
+3. **Deterministic Synchronization**: Never use hardcoded sleeps (`browser.pause()`); rely strictly on `waitForDisplayed()`, `browser.waitUntil()`, or native `await expect()`.
 4. **Central Export**: Register every new screen in `src/screens/index.ts`.
-5. **Static Verification**: Run `npx tsc --noEmit` before proposing test runs.
+5. **Static Verification**: Run `npx tsc --noEmit && npm run lint && npm run format:check` before committing.
