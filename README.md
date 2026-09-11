@@ -10,8 +10,8 @@ A cross-platform (Android & iOS) mobile test automation framework developed with
 
 ## 📑 Table of Contents
 
-- [Actual Time Tracking & Effort Breakdown](#-actual-time-tracking--effort-breakdown)
-- [Motivation Behind Chosen Tools & Approach](#-motivation-behind-chosen-tools--approach)
+- [Actual Time Tracking & Effort Breakdown](#actual-time-tracking--effort-breakdown)
+- [Motivation Behind Chosen Tools & Approach](#motivation-behind-chosen-tools--approach)
 - [Architecture & Design Highlights](#architecture--design-highlights)
 - [Tech Stack](#tech-stack)
 - [Test Suites & Coverage Matrix](#test-suites--coverage-matrix)
