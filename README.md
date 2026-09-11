@@ -10,6 +10,8 @@ A cross-platform (Android & iOS) mobile test automation framework developed with
 
 ## 📑 Table of Contents
 
+- [Actual Time Tracking & Effort Breakdown](#-actual-time-tracking--effort-breakdown)
+- [Motivation Behind Chosen Tools & Approach](#-motivation-behind-chosen-tools--approach)
 - [Architecture & Design Highlights](#architecture--design-highlights)
 - [Tech Stack](#tech-stack)
 - [Test Suites & Coverage Matrix](#test-suites--coverage-matrix)
@@ -22,6 +24,40 @@ A cross-platform (Android & iOS) mobile test automation framework developed with
 - [Quality Gates: TypeScript, ESLint, Prettier & Git Hooks](#quality-gates-typescript-eslint-prettier--git-hooks)
 - [Test Reporting (Allure)](#test-reporting-allure)
 - [Troubleshooting & FAQs](#troubleshooting--faqs)
+
+## Actual Time Tracking & Effort Breakdown
+
+As suggested in the assignment submission guidelines, below is the breakdown of actual time and effort invested across all development phases:
+
+| Phase                                                | Activities & Focus Areas                                                                                                                                                                                                                                                                                                       | Actual Time Spent   |
+| :--------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------ |
+| **Phase 1: Analysis & Overview**                     | • Analysed Android & iOS app repositories and README specifications.<br/>• Initialized WebdriverIO v9, Appium 2, TypeScript ~5.5, and wdio config (`wdio.conf.ts`).<br/>• Configured automated app binary fetch pipeline (`scripts/fetch-apps.sh`).                                                                            | **2-2.5 hours**     |
+| **Phase 2: Page Object Model Design**                | • Designed `BaseScreen.ts` cross-platform locator abstraction layer (`byId`, `byText`, dynamic coordinate tap helpers).<br/>• Implemented screen classes for Consent, Preferences, Content Overview, Content Detail, Video Player, and Debug Options.                                                                          | **3.5 hours**       |
+| **Phase 3: E2E Test Suite Implementation**           | • Test scenarios covering Consent persistence, Overview refresh/error states, and full Video Playback lifecycle (100% completion, buffering, pause/resume, errors).<br/>• Migrated static assertions to WebdriverIO native auto-retrying matchers (`await expect(...)`).                                                       | **4.0 - 4.5 hours** |
+| **Phase 4: Appium Inspector & Debugging**            | • Verified runtime view hierarchies on live Android Emulators & iOS Simulators via **Appium Inspector**.<br/>• Fixed toggle switch tap behavior via bounding box coordinate calculation ([Appium Pro #22](https://appium.pro/editions/22-making-your-appium-tests-fast-and-reliable-part-4-dealing-with-unfindable-elements)). | **1.5 hours**       |
+| **Phase 5: Quality Gates & Open-Source Device Farm** | • Enforced strict TypeScript compilation, ESLint (`plugin:wdio/recommended`), Prettier, and Husky + lint-staged pre-commit hooks.<br/>• Integrated `@appium/device-farm` with live Web Dashboard and resolved Node 24 `bplist-parser: 0.3.2` dependency override.                                                              | **1.0 hour**        |
+| **Phase 6: Reporting & Documentation**               | • Configured Allure reporting and automated 1-click GitHub Pages deployment (`npm run report:deploy`).<br/>• Authored comprehensive README covering architecture, test plan, AI usage notes, and execution guides.                                                                                                             | **2 hours**         |
+| **Total Effort**                                     | **Full Cross-Platform Framework Implementation**                                                                                                                                                                                                                                                                               | **~14-15 hours**    |
+
+---
+
+## Motivation Behind Chosen Tools & Approach
+
+The assignment permits choosing between cross-platform tools (**WebdriverIO + Appium + TypeScript**) or native test frameworks (**XCUITest / Compose UI tests**). Below is the strategic rationale for our architectural selection:
+
+### Why WebdriverIO v9 + Appium 2.x + TypeScript Was Chosen:
+
+1. **Unified Cross-Platform Codebase (Single Test Suite for Android & iOS)**:
+   - Writing native tests would require building and maintaining two completely separate codebases (Kotlin/Java with Compose UI / Espresso for Android, and Swift with XCUITest for iOS).
+   - WebdriverIO allows **100% test logic reuse** through a single Page Object Model, drastically reducing maintenance overhead and preventing feature drift between platforms.
+2. **Strict Type Safety & Modern Tooling**:
+   - TypeScript guarantees compile-time validation for page elements, action methods, and capability configurations, preventing runtime typos.
+3. **Advanced Synchronization & Native Retrying Matchers**:
+   - WebdriverIO v9 includes built-in async expectation polling (`await expect(el)...`), ensuring reliable, deterministic synchronization without fragile static sleeps.
+4. **Extensibility to Real Device Farms & Open-Source Grids**:
+   - Appium 2's modular architecture allows plug-and-play integration with `@appium/device-farm` for local device pooling, or commercial clouds (BrowserStack/SauceLabs) via standard W3C capabilities.
+5. **Rich Reporting Ecosystem**:
+   - Native integration with Allure Framework generates interactive HTML reports with execution timelines and attachments, readily publishable to GitHub Pages.
 
 ---
 
@@ -193,7 +229,33 @@ We created a specialized agent skill located in [`.agent/skills/generate-mobile-
 
 ---
 
-### 4. Summary
+### 4. AI Prompts Used During Development
+
+As suggested in the assignment submission guidelines, below are representative examples of prompts used to guide AI during development:
+
+#### Prompt 1: Initial Page Object Scaffolding & Locator Abstraction
+
+> _"Analyze the Video QA Challenge Android (Compose) and iOS (SwiftUI) repositories. Generate a Page Object Model architecture referencing current implemented `BaseScreen` that resolves accessibility IDs/resource IDs on Android and accessibility labels on iOS. Taking current implemented `ConsentScreen` as a reference screen encapsulate all screen actions for ContentOverviewScreen, and VideoPlayerScreen."_
+
+#### Prompt 2: Handling Elusive Switch Taps via Coordinate Offsets (Appium Pro #22)
+
+> _"On iOS, clicking directly on the `analytics_toggle` element lands in non-tappable row whitespace due to SwiftUI element trait boundaries. Refer to Appium Pro #22 and implement a relative pointer action helper in `BaseScreen.ts` that queries the element bounding box dimensions `(x, y, width, height)` and executes a precise tap offset directly on the switch toggle."_
+
+#### Prompt 3: Appium Device Farm Configuration & Dependency Resolution
+
+> _"Configure the Appium 2 `@appium/device-farm` plugin with a custom `appium-device-farm.json` and a dedicated `wdio.devicefarm.conf.ts` for dynamic Android & iOS device pooling. Troubleshoot the Node 24 runtime exception in `bplist-parser` and configure the appropriate npm override in `package.json`."_
+
+#### Prompt 4: Utilise skill to generate new spec
+
+> _"Using the `generate-mobile-tests` skill, generate a new test specification for transition to `Completed` state when video playback finishes."_
+
+#### Prompt 5: Refactoring Existing Tests
+
+> _"Review src/specs/videoPlayback.spec.ts against the generate-mobile-tests skill checklist to ensure all assertions use deep state validation."_
+
+---
+
+### 5. Summary
 
 AI functioned as a powerful velocity multiplier for repetitive boilerplate and mathematical coordinate debugging. However, **human Quality Engineering domain expertise, live Appium Inspector debugging, and explicit feedback loops** were vital to achieving a rock-solid, 100% passing cross-platform test suite.
 
