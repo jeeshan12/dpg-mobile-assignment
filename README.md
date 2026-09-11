@@ -401,7 +401,7 @@ Test results are recorded in JUnit and Allure formats under `reports/`.
    - Emulators and Simulators allow complete application sandboxing and instant cache wipes (`browser.reloadSession()` combined with `-resetAllState` launch flags).
 2. **Launch Intent & Timing Acceleration**:
    - Both Android AVD and iOS Simulator runtimes allow injection of launch intent extras and environment flags (`--ei contentDelayMs 800 --ei videoBufferingMs 800`). This accelerates synthetic network delays from 4+ seconds down to 800ms, making 100% video playback tests fast, deterministic, and free of timing flakiness.
-3. **Modern Target OS Baseline **:
+3. **Modern Target OS Baseline**:
    - Target SDKs using environment variables to run on different android and IOS versions against emulators/simulators
 4. **Zero-Cost Scalability & Cloud Device Farm Ready**:
    - Pairing local AVDs/Simulators with `@appium/device-farm` provides a self-hosted private cloud grid with dynamic pooling and web dashboards at zero recurring subscription cost.
