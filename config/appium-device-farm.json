@@ -1,0 +1,16 @@
+{
+  "server": {
+    "port": 4723,
+    "relaxed-security": true,
+    "log-level": "info",
+    "use-plugins": ["device-farm"],
+    "plugin": {
+      "device-farm": {
+        "platform": "both",
+        "bindHostOrIp": "127.0.0.1",
+        "enableDashboard": true,
+        "skipChromeDownload": true
+      }
+    }
+  }
+}
