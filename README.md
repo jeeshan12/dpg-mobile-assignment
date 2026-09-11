@@ -2,6 +2,10 @@
 
 A cross-platform (Android & iOS) mobile test automation framework developed with **WebdriverIO v9**, **Appium 2.x**, **TypeScript**, **Mocha**, and **Allure Reporter** for the Video QA Challenge application.
 
+[![Allure Report](https://img.shields.io/badge/Allure%20Report-Live%20Demo-brightgreen?logo=allure&style=for-the-badge)](https://jeeshan12.github.io/dpg-mobile-assignment/)
+
+> 📊 **Live Interactive Report**: [https://jeeshan12.github.io/dpg-mobile-assignment/](https://jeeshan12.github.io/dpg-mobile-assignment/) (Android & iOS)
+
 ---
 
 ## 📑 Table of Contents
@@ -375,14 +379,46 @@ Whenever you run `git commit`:
 
 Test results are recorded in JUnit and Allure formats under `reports/`.
 
-### Generate & Open Allure Report
+### 🌐 Live Hosted Report (GitHub Pages)
+
+👉 **[Open Live Interactive Allure Report (Android & iOS)](https://jeeshan12.github.io/dpg-mobile-assignment/)**
+
+---
+
+### Test Execution Environment & Selection Criteria
+
+| Parameter                | Android Environment                                  | iOS Environment                          |
+| :----------------------- | :--------------------------------------------------- | :--------------------------------------- |
+| **Device Model**         | Google Pixel 8 Pro (Emulator / AVD)                  | iPhone 16 (Simulator)                    |
+| **Operating System**     | Android 14.0 (API Level 34 - `x86_64` / `arm64-v8a`) | iOS 18.6 (Xcode 16 Runtime)              |
+| **Automation Driver**    | `appium-uiautomator2-driver` (~8.6.1)                | `appium-xcuitest-driver` (~12.11.1)      |
+| **Execution Layer**      | Local CLI Runner & `@appium/device-farm`             | Local CLI Runner & `@appium/device-farm` |
+| **Suite Execution Time** | ~02 min 51 sec (13 specs passed)                     | ~03 min 23 sec (13 specs passed)         |
+
+#### Why This Environment Was Chosen:
+
+1. **Deterministic Isolation & Clean State Resets**:
+   - Emulators and Simulators allow complete application sandboxing and instant cache wipes (`browser.reloadSession()` combined with `-resetAllState` launch flags).
+2. **Launch Intent & Timing Acceleration**:
+   - Both Android AVD and iOS Simulator runtimes allow injection of launch intent extras and environment flags (`--ei contentDelayMs 800 --ei videoBufferingMs 800`). This accelerates synthetic network delays from 4+ seconds down to 800ms, making 100% video playback tests fast, deterministic, and free of timing flakiness.
+3. **Modern Target OS Baseline**:
+   - Target SDKs using environment variables to run on different android and IOS versions against emulators/simulators
+4. **Zero-Cost Scalability & Cloud Device Farm Ready**:
+   - Pairing local AVDs/Simulators with `@appium/device-farm` provides a self-hosted private cloud grid with dynamic pooling and web dashboards at zero recurring subscription cost.
+
+---
+
+### Local Report Generation & Deployment
 
 ```bash
-# Generate the interactive HTML report
+# 1. Generate the interactive HTML report from test results
 npm run report:generate
 
-# Open the report in your default browser
+# 2. Open the report in your default browser locally
 npm run report:open
+
+# 3. Publish the report to GitHub Pages (no CI/Actions needed!)
+npm run report:deploy
 ```
 
 ### Report Previews
