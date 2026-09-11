@@ -4,6 +4,7 @@
   "private": false,
   "description": "Cross-platform (Android + iOS) Appium/WebdriverIO/TypeScript test suite",
   "scripts": {
+    "fetch:apps": "bash scripts/fetch-apps.sh",
     "pretest": "bash scripts/fetch-apps.sh",
     "test": "wdio run ./config/wdio.all.conf.ts",
     "pretest:android": "bash scripts/fetch-apps.sh",
